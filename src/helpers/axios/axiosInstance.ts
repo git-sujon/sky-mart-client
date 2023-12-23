@@ -1,7 +1,6 @@
 import { authKey } from "@/constants/storageKeys";
-import { IGenericErrorResponse, ResponseSuccessType } from "@/types/common.type";
+import { IGenericErrorResponse, ResponseSuccessType } from "@/types/common";
 import { getFromLocalStorage } from "@/utils/localStorage";
-import { getFromSessionStorage } from "@/utils/sessionStorage";
 import axios from "axios";
 
 const instance = axios.create();
@@ -13,7 +12,7 @@ instance.defaults.timeout = 60000;
 instance.interceptors.request.use(
   function (config) {
     // Do something before request is sent
-    const accessToken = getFromSessionStorage(authKey);
+    const accessToken = getFromLocalStorage(authKey);
     if (accessToken) {
       config.headers.Authorization = accessToken;
     }
@@ -30,23 +29,23 @@ instance.interceptors.response.use(
   //@ts-ignore
   function (response) {
     const responseObject: ResponseSuccessType = {
-      data: response?.data,
+      data: response?.data?.data,
       meta: response?.data?.meta,
     };
     return responseObject;
   },
   async function (error) {
-    // if (error?.response?.status === 403) {
-    // } else {
-    //   const responseObject: IGenericErrorResponse = {
-    //     statusCode: error?.response?.data?.statusCode || 500,
-    //     message: error?.response?.data?.message || "Something went wrong",
-    //     errorMessages: error?.response?.data?.message,
-    //   };
-    //   return responseObject;
-    // }
+    if (error?.response?.status === 403) {
+    } else {
+      const responseObject: IGenericErrorResponse = {
+        statusCode: error?.response?.data?.statusCode || 500,
+        message: error?.response?.data?.message || "Something went wrong",
+        errorMessages: error?.response?.data?.message,
+      };
+      return responseObject;
+    }
 
-    return Promise.reject(error);
+    // return Promise.reject(error);
   }
 );
 
