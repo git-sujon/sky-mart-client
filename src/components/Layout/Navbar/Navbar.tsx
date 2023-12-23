@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { GiHamburgerMenu } from "react-icons/gi";
-import SolidButton from "../UI/Button/SolidButton";
-import OutlinedButton from "../UI/Button/OutlinedButton";
-import CartButton from "../UI/Button/CartButton";
+import SolidButton from "../../UI/Button/SolidButton";
+import OutlinedButton from "../../UI/Button/OutlinedButton";
+import CartButton from "../../UI/Button/CartButton";
 const Navbar = () => {
   return (
     <header className="bg-white border-b ">
