@@ -11,6 +11,7 @@ import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { JwtPayload } from "jwt-decode";
+import { IJwtDecoded } from "@/types/user";
 
 const ProductDetails = ({ id }: { id: string }) => {
   const { data, isLoading } = useGetSingleProductQuery(id);
@@ -59,6 +60,7 @@ const ProductDetails = ({ id }: { id: string }) => {
           userId: _id,
           productId: product._id,
           quantity,
+          title:product.title,
           color: selectedColor,
           size: selectedSize,
         });

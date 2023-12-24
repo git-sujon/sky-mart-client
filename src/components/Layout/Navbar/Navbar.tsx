@@ -2,19 +2,18 @@
 
 import Link from "next/link";
 import SolidButton from "../../UI/Button/SolidButton";
-import CartButton from "../../UI/Button/CartButton";
 import { useGetMyCartQuery } from "@/redux/api/cartApi";
-import LoadingPage from "@/app/loading";
 import { getUserInfo } from "@/helper/getUserInfo";
 import { removeUserInfo } from "@/utils/localStorage";
 import { authKey } from "@/constants/storageKeys";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { IJwtDecoded } from "@/types/user";
+import Cart from "@/components/View/Cart/Cart";
+
 const Navbar = () => {
   const [isUserLogged, setIsUserLogged] = useState(false);
-  const { data, isLoading } = useGetMyCartQuery(undefined!);
-  const [totalCart, setTotalCart] = useState(0);
+
   const router = useRouter();
   const { _id } = getUserInfo() as IJwtDecoded;
   useEffect(() => {
@@ -22,20 +21,6 @@ const Navbar = () => {
       setIsUserLogged(true);
     }
   }, [_id]);
-
-  const cartData: any = data?.data?.items;
-
-  useEffect(() => {
-    if (isLoading) {
-    }
-    setTotalCart(cartData?.length);
-  }, [cartData, setTotalCart, isLoading]);
-
-  if (isUserLogged && isLoading) {
-    return <>...</>;
-  }
-
-  const cartOpener = () => {};
 
   const logOutHandler = () => {
     setIsUserLogged(false);
@@ -82,7 +67,7 @@ const Navbar = () => {
                 <SolidButton name="Login" url="/login" />
               )}
 
-              <CartButton action={""} quantity={totalCart} />
+              <Cart id={_id} />
             </div>
           </div>
         </div>
