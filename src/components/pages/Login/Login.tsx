@@ -7,10 +7,10 @@ import { useUserLoginMutation } from "@/redux/api/authApi";
 import { setToLocalStorage } from "@/utils/localStorage";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
-
+import { useRouter } from "next/navigation";
 const Login: React.FC = () => {
   const [userLogin] = useUserLoginMutation();
-
+  const router = useRouter();
   const [loginData, setLoginData] = useState({
     email: "",
     password: "",
@@ -28,10 +28,10 @@ const Login: React.FC = () => {
     e.preventDefault();
 
     const response: any = await userLogin({ ...loginData });
-
     if (response?.data?.data?.accessToken) {
       setToLocalStorage(authKey, response?.data?.data?.accessToken);
       toast.success("Logged in successfully");
+      router.push("/");
     }
 
     if (response?.error?.data?.message) {

@@ -38,5 +38,5 @@ export const getFromLocalStorage = (key: string) => {
 
 
 export const removeUserInfo = (key: string) => {
-  return sessionStorage.removeItem(key);
+  return localStorage.removeItem(key);
 };

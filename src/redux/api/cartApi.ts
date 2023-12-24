@@ -12,7 +12,7 @@ export const cartApi = baseApi.injectEndpoints({
         params: arg,
       }),
 
-      providesTags: [tagTypes.products],
+      providesTags: [tagTypes.carts, tagTypes.auth],
     }),
 
     addToCart: build.mutation({
@@ -21,7 +21,7 @@ export const cartApi = baseApi.injectEndpoints({
         method: "POST",
         data: data,
       }),
-      invalidatesTags: [tagTypes.auth],
+      invalidatesTags: [tagTypes.carts, tagTypes.auth],
     }),
   }),
 });

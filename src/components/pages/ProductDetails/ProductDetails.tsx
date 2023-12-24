@@ -51,7 +51,7 @@ const ProductDetails = ({ id }: { id: string }) => {
   };
 
   const handleAddToCart = async () => {
-    const { _id } = getUserInfo();
+    const { _id } = getUserInfo() as IJwtDecoded;
 
     if (selectedColor && selectedSize) {
       if (_id) {

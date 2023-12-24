@@ -11,6 +11,7 @@ export interface IUser {
 }
 
 export interface IJwtDecoded {
+  _id: string;
   email: string;
   role: string;
   iat: number;
