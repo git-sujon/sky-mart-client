@@ -4,6 +4,8 @@ import SolidButton from "@/components/UI/Button/SolidButton";
 import { useGetSingleProductQuery } from "@/redux/api/productApi";
 import Image from "next/image";
 import React, { useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
+
 const ProductDetails = ({ id }: { id: string }) => {
   const { data: product, isLoading } = useGetSingleProductQuery(id);
 
@@ -13,7 +15,6 @@ const ProductDetails = ({ id }: { id: string }) => {
   if (isLoading) {
     return <LoadingPage />;
   }
-  console.log("product:", product);
 
   const handleColorChange = (color) => {
     setSelectedColor(color);
@@ -24,7 +25,9 @@ const ProductDetails = ({ id }: { id: string }) => {
   };
 
   const handleAddToCart = () => {
-    console.log(selectedColor, selectedSize);
+    if (!selectedColor || !selectedSize) {
+      toast.error("Please Select Color and Size first");
+    }
   };
   return (
     <div className="max-w-6xl mx-auto mt-8 min-h-svh">
