@@ -35,3 +35,8 @@ export const getFromLocalStorage = (key: string) => {
     return null;
   }
 };
+
+
+export const removeUserInfo = (key: string) => {
+  return sessionStorage.removeItem(key);
+};

@@ -16,7 +16,7 @@ const Product = () => {
   return (
     <div className="mt-5" >
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 ">
-        {products.map((product:IProduct) => (
+        {products?.data?.map((product:IProduct) => (
           <ProductCard key={product._id} product={product} />
         ))}
       </div>

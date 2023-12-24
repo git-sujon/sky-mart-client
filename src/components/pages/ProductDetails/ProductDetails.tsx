@@ -1,35 +1,80 @@
 "use client";
 import LoadingPage from "@/app/loading";
 import SolidButton from "@/components/UI/Button/SolidButton";
+import { getUserInfo } from "@/helper/getUserInfo";
+import { useAddToCartMutation } from "@/redux/api/cartApi";
+
 import { useGetSingleProductQuery } from "@/redux/api/productApi";
 import { IVariations } from "@/types/product";
 import Image from "next/image";
 import React, { useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
+import { JwtPayload } from "jwt-decode";
 
 const ProductDetails = ({ id }: { id: string }) => {
-  const { data: product, isLoading } = useGetSingleProductQuery(id);
-
+  const { data, isLoading } = useGetSingleProductQuery(id);
+  const [addToCart] = useAddToCartMutation();
   const [selectedColor, setSelectedColor] = useState("");
   const [selectedSize, setSelectedSize] = useState("");
-
+  const [quantity, setQuantity] = useState(1);
+  const router = useRouter();
   if (isLoading) {
     return <LoadingPage />;
   }
 
-  const handleColorChange = (color:string) => {
+  const product = data?.data;
+
+  const handleColorChange = (color: string) => {
     setSelectedColor(color);
   };
 
-  const handleSizeChange = (size:string) => {
+  const handleSizeChange = (size: string) => {
     setSelectedSize(size);
   };
 
-  const handleAddToCart = () => {
-    if (!selectedColor || !selectedSize) {
+  const handleIncrement = () => {
+    setQuantity((prevQuantity) => prevQuantity + 1);
+  };
+
+  const handleDecrement = () => {
+    if (quantity > 1) {
+      setQuantity((prevQuantity) => prevQuantity - 1);
+    }
+  };
+
+  const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newQuantity = parseInt(e.target.value, 10);
+    if (!isNaN(newQuantity) && newQuantity >= 1) {
+      setQuantity(newQuantity);
+    }
+  };
+
+  const handleAddToCart = async () => {
+    const { _id } = getUserInfo();
+
+    if (selectedColor && selectedSize) {
+      if (_id) {
+        const response: any = await addToCart({
+          userId: _id,
+          productId: product._id,
+          quantity,
+          color: selectedColor,
+          size: selectedSize,
+        });
+
+        if (response?.data?.data) {
+          toast.success("Add to Cart");
+        }
+      } else {
+        toast.error("Please login first");
+        router.push("/login");
+      }
+    } else {
       toast.error("Please Select Color and Size first");
     }
   };
+
   return (
     <div className="max-w-6xl mx-auto mt-8 min-h-svh">
       <div className="flex flex-wrap">
@@ -52,7 +97,7 @@ const ProductDetails = ({ id }: { id: string }) => {
           <div className="mb-4">
             <p className="text-gray-600">Select Color:</p>
             <div className="flex space-x-2">
-              {product.variations.map((variation:IVariations) => (
+              {product.variations.map((variation: IVariations) => (
                 <div
                   key={variation._id}
                   onClick={() => handleColorChange(variation.color)}
@@ -70,7 +115,7 @@ const ProductDetails = ({ id }: { id: string }) => {
           <div className="mb-4">
             <p className="text-gray-600">Select Size:</p>
             <div className="flex space-x-2">
-              {product.variations.map((variation:IVariations) => (
+              {product.variations.map((variation: IVariations) => (
                 <button
                   key={variation._id}
                   onClick={() => handleSizeChange(variation.size)}
@@ -83,6 +128,31 @@ const ProductDetails = ({ id }: { id: string }) => {
                   {variation.size}
                 </button>
               ))}
+            </div>
+          </div>
+
+          <div className="mb-4">
+            <p className="text-gray-600">Select Quantity:</p>
+            <div className="flex items-center space-x-2">
+              <button
+                className="px-3.5 py-1 border border-gray-300  bg-slate-100"
+                onClick={handleDecrement}
+              >
+                -
+              </button>
+              <input
+                type="number"
+                min="1"
+                value={quantity}
+                onChange={handleQuantityChange}
+                className="w-10 h-8 text-center border border-gray-300"
+              />
+              <button
+                className="px-3 py-1 border border-gray-300 bg-slate-200"
+                onClick={handleIncrement}
+              >
+                +
+              </button>
             </div>
           </div>
 
