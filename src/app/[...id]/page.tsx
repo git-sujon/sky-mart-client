@@ -1,10 +1,13 @@
+import ProductDetails from "@/components/pages/ProductDetails/ProductDetails";
 
-const ProductDetails = () => {
-    return (
-        <div>
-            
-        </div>
-    );
+const ProductDetailsPage = ({ params }: { params: { id: string[] } }) => {
+  const id = params?.id[0];
+
+  return (
+    <div className="">
+      <ProductDetails id={id} />
+    </div>
+  );
 };
 
-export default ProductDetails;
+export default ProductDetailsPage;

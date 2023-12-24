@@ -10,7 +10,7 @@ const Product = () => {
     return <LoadingPage />;
   }
 
-  console.log(products);
+
 
   return (
     <div className="mt-5" >
