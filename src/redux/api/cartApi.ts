@@ -16,14 +16,14 @@ export const cartApi = baseApi.injectEndpoints({
     }),
 
     addToCart: build.mutation({
-        query: (data) => ({
-          url: `${urlExtension}/add-to-cart`,
-          method: "POST",
-          data: data,
-        }),
-        invalidatesTags: [tagTypes.auth],
+      query: (data) => ({
+        url: `${urlExtension}/add-to-cart`,
+        method: "POST",
+        data: data,
       }),
+      invalidatesTags: [tagTypes.auth],
+    }),
   }),
 });
 
-export const {  } = cartApi;
+export const { useGetMyCartQuery, useAddToCartMutation } = cartApi;

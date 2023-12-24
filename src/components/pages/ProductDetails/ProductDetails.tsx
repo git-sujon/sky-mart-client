@@ -2,6 +2,7 @@
 import LoadingPage from "@/app/loading";
 import SolidButton from "@/components/UI/Button/SolidButton";
 import { useGetSingleProductQuery } from "@/redux/api/productApi";
+import { IVariations } from "@/types/product";
 import Image from "next/image";
 import React, { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
@@ -16,11 +17,11 @@ const ProductDetails = ({ id }: { id: string }) => {
     return <LoadingPage />;
   }
 
-  const handleColorChange = (color) => {
+  const handleColorChange = (color:string) => {
     setSelectedColor(color);
   };
 
-  const handleSizeChange = (size) => {
+  const handleSizeChange = (size:string) => {
     setSelectedSize(size);
   };
 
@@ -51,7 +52,7 @@ const ProductDetails = ({ id }: { id: string }) => {
           <div className="mb-4">
             <p className="text-gray-600">Select Color:</p>
             <div className="flex space-x-2">
-              {product.variations.map((variation) => (
+              {product.variations.map((variation:IVariations) => (
                 <div
                   key={variation._id}
                   onClick={() => handleColorChange(variation.color)}
@@ -69,7 +70,7 @@ const ProductDetails = ({ id }: { id: string }) => {
           <div className="mb-4">
             <p className="text-gray-600">Select Size:</p>
             <div className="flex space-x-2">
-              {product.variations.map((variation) => (
+              {product.variations.map((variation:IVariations) => (
                 <button
                   key={variation._id}
                   onClick={() => handleSizeChange(variation.size)}

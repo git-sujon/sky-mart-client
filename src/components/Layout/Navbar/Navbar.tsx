@@ -37,7 +37,7 @@ const Navbar = () => {
 
           <div className="">
             <div className="flex justify-center items-center gap-x-4 ">
-              <SolidButton name="Login" url="/" />
+              <SolidButton name="Login" url="/login" />
               <CartButton />
             </div>
           </div>

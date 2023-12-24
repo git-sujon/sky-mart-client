@@ -33,11 +33,11 @@ export const axiosBaseQuery =
       });
       return result;
     } catch (axiosError) {
-      let err = axiosError as AxiosError;
+      let error = axiosError as AxiosError;
       return {
         error: {
-          status: err.response?.status,
-          data: err.response?.data || err.message,
+          status: error.response?.status,
+          data: error.response?.data || error.message,
         },
       };
     }

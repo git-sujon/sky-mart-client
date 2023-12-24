@@ -1,9 +1,10 @@
 import SolidButton from "@/components/UI/Button/SolidButton";
 import RatingStar from "@/components/UI/Rating/RatingStar";
+import { IProduct } from "@/types/product";
 import Image from "next/image";
 import Link from "next/link";
 
-const ProductCard = ({ product }: { product: any }) => {
+const ProductCard = ({ product }: { product: IProduct }) => {
   return (
     <Link
       href={`/${product?._id}`}
